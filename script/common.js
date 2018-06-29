@@ -83,18 +83,27 @@
 		}
 	}
 	
+	/* 글쓰기 */	
 	function gfContentWriteAction(){
-		var contentObject = new Object();
 		var rand = Number(Math.floor(Math.random() * 8));
-		contentObject.index = gIndex;
-		contentObject.content = $("#contentTextarea").val();
-		contentObject.user = gUserArray[rand];
-		contentObject.like = 0;
+		$("#frmWrite user").val(gUserArray[rand]);
+		$("#frmWrite data").val($("#contentTextarea").val());
+		var sAction = "/write";
+		var fnCallback = gfContentWriteActionCallback;
+		gfAjaxCallWithForm(sAction,$('#frmWrite'),fnCallback,"POST")
 		
-		gIndex++;
-		gContentArray.push(contentObject);
-		$("#contentTextarea").val("");
-		gfMenuContentList();
+	}
+	
+	function gfContentWriteActionCallback(){
+		console.log(data);
+		if ( "done" == data ){
+			alert("글쓰기 성공");
+			gfMenuContentList();
+			//gfMsgBox(data.resultMsg, "핡~!", false, fnInsertAccountSuccessCallback);
+		}else{
+			alert("글쓰기 실패");
+			//gfMsgBox(data.resultMsg, "핡~!");
+		}
 	}
 	
 	function gfContentWriteCancelAction(){
